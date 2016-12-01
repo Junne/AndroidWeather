@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Weather</string>
+    <string name="nav_city">选择城市</string>
+    <string name="multi_cities">多城市管理</string>
+    <string name="setting">设置</string>
+    <string name="about">关于</string>
+
 </resources>
