@@ -4,11 +4,12 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_city"
-            android:icon="@drawable/ic_favorite"
+            android:icon="@drawable/ic_location"
             android:title="@string/nav_city"/>
 
         <item
             android:id="@+id/nav_multi_cities"
+            android:icon="@drawable/ic_multi_cities"
             android:title="@string/multi_cities"
             />
     </group>
@@ -17,10 +18,12 @@
         <menu>
             <item
                 android:id="@+id/nav_set"
+                android:icon="@drawable/ic_menu_set"
                 android:title="@string/setting"/>
 
             <item
                 android:id="@+id/nav_about"
+                android:icon="@drawable/ic_menu_about"
                 android:title="@string/about"/>
 
         </menu>
