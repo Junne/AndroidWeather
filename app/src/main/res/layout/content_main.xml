@@ -22,6 +22,6 @@
         layout="@layout/progressbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBotton="150dp"/>
+        android:layout_marginBottom="150dp"/>
 
 </RelativeLayout>
