@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.github.junne.androidweather.BuildConfig;
 import com.github.junne.androidweather.base.BaseApplication;
+import com.github.junne.androidweather.common.utils.Time;
 
 import java.io.BufferedWriter;
 import java.io.File;
