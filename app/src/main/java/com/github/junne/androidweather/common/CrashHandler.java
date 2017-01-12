@@ -1,9 +1,11 @@
 package com.github.junne.androidweather.common;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 
 import com.bumptech.glide.load.engine.cache.DiskCache;
+import com.github.junne.androidweather.common.utils.SharedPreferenceUtil;
 import com.github.junne.androidweather.common.utils.Util;
 
 import java.io.StringWriter;
@@ -36,14 +38,14 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler{
         PLog.e(TAG, collectCrashDeviceInfo());
         PLog.e(TAG, getCrashInfo(ex));
 
-
+        SharedPreferenceUtil.getInstance().setCityName("北京");
 
 
     }
 
     public String getCrashInfo(Throwable ex) {
         Writer result = new StringWriter();
-        
+
 
     }
 
