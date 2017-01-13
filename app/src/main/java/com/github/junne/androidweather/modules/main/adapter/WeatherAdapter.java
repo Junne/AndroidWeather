@@ -3,16 +3,21 @@ package com.github.junne.androidweather.modules.main.adapter;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.ContentFrameLayout;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.util.Util;
 import com.github.junne.androidweather.R;
+import com.github.junne.androidweather.common.PLog;
+import com.github.junne.androidweather.common.utils.SharedPreferenceUtil;
+import com.github.junne.androidweather.common.utils.Util;
 import com.github.junne.androidweather.component.AnimRecyclerViewAdapter;
+import com.github.junne.androidweather.component.ImageLoader;
 import com.github.junne.androidweather.modules.main.domain.Weather;
 
 import butterknife.BindView;
@@ -68,6 +73,7 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<RecyclerView.ViewHol
                 return new NowWeatherViewHolder(
                         LayoutInflater.from(mContext).inflate(R.layout.item_temperature, parent, false));
             case TYPE_TWO:
+                return
 
         }
 
@@ -104,11 +110,41 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<RecyclerView.ViewHol
                 tempMin.setText(String.format("↓ %s ℃", weather.dailyForecast.get(0).tmp.min));
 
                 tempPm.setText(String.format("PM2.5: %s μg/m³", Util.safeText(weather.aqi.city.pm25)));
+                tempQuality.setText(Util.safeText("空气质量： ", weather.aqi.city.qlty));
 
-
-
+                ImageLoader.load(itemView.getContext(),
+                        SharedPreferenceUtil.getInstance().getInt(weather.now.cond.txt, R.mipmap.none),
+                        weatherIcon);
+            } catch (Exception e) {
+                PLog.e(TAG, e.toString());
             }
+        }
+    }
+
+    private class HoursWeatherViewHolder extends RecyclerView.ViewHolder {
+        private LinearLayout itemHourInfoLinearlayout;
+        private TextView[] mClock = new TextView[mWeatherData.hourlyForecast.size()];
+        private TextView[] mTemp = new TextView[mWeatherData.hourlyForecast.size()];
+        private TextView[] mHumidity = new TextView[mWeatherData.hourlyForecast.size()];
+        private TextView[] mWind = new TextView[mWeatherData.hourlyForecast.size()];
+
+        HoursWeatherViewHolder(View itemView) {
+            super(itemView);
+            itemHourInfoLinearlayout = (LinearLayout) itemView.findViewById(R.id.item_hour_info_linearlayout);
+
+            for (int i = 0; i < mWeatherData.hourlyForecast.size(); i++) {
+                View view = View.inflate(mContext, R.layout.item_hour_info, null);
+                mClock[i] = (TextView) view.findViewById(R.id.)
+            }
+
         }
 
     }
+
+
+
+
+
+
+
 }

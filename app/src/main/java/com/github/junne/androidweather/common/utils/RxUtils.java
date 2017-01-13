@@ -1,6 +1,8 @@
 package com.github.junne.androidweather.common.utils;
 
 
+import org.reactivestreams.Subscription;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.Scheduler;
@@ -15,20 +17,28 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 public class RxUtils {
 
-    public static <T>ObservableTransformer<T, T> rxSchedulerHelper() {
+//    public static <T>ObservableTransformer<T, T> rxSchedulerHelper() {
+//
+////        return tObservable -> tObservable.subscribeOn(Schedulers.io())
+////                .unsubscribeOn(AndroidSchedulers.mainThread())
+////                .observeOn(AndroidSchedulers.mainThread());
+//    }
+//
+//    public static <T> ObservableTransformer<T, T> rxSchedulerHelper(final Scheduler scheduler) {
+////        return Observable -> Observable.subscribeOn(scheduler)
+////                .unsubscribeOn(AndroidSchedulers.mainThread())
+////                .observeOn(AndroidSchedulers.mainThread());
+//    }
+//
+//    public static void unifiedErrorHandler() {
+//
+//    }
+//
+//    public static void unsubscribe(Subscription subscription) {
+//
+//    }
 
-//        return tObservable -> tObservable.subscribeOn(Schedulers.io())
-//                .unsubscribeOn(AndroidSchedulers.mainThread())
-//                .observeOn(AndroidSchedulers.mainThread());
-    }
 
-    public static <T> ObservableTransformer<T, T> rxSchedulerHelper(final Scheduler scheduler) {
-//        return Observable -> Observable.subscribeOn(scheduler)
-//                .unsubscribeOn(AndroidSchedulers.mainThread())
-//                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    
 
 
 

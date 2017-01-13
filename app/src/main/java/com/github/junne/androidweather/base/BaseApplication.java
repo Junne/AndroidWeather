@@ -5,6 +5,12 @@ import android.content.Context;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.appcompat.BuildConfig;
 
+import com.github.junne.androidweather.common.CrashHandler;
+import com.github.moduth.blockcanary.BlockCanary;
+import com.squareup.leakcanary.LeakCanary;
+
+import im.fir.sdk.FIR;
+
 /**
  * Created by baijf on 04/01/2017.
  */
@@ -14,10 +20,10 @@ public class BaseApplication extends Application {
     public static String cacheDir;
     public static Context mAppContext = null;
 
-    static {
-        AppCompatDelegate.setDefaultNightMode(
-                AppCompatDelegate.MODE_NIGHT_NO);
-    }
+//    static {
+//        AppCompatDelegate.setDefaultNightMode(
+//                AppCompatDelegate.MODE_NIGHT_NO);
+//    }
 
     @Override
     public void onCreate() {

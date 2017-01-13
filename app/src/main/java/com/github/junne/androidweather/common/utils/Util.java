@@ -15,6 +15,9 @@ import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.ViewConfiguration;
 
+import com.github.junne.androidweather.common.PLog;
+import com.github.junne.androidweather.common.ToastUtil;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -39,7 +42,7 @@ public class Util {
             return info.versionName;
         } catch (Exception e) {
             e.printStackTrace();
-            return "Not Find Version"
+            return "Not Find Version";
         }
     }
 

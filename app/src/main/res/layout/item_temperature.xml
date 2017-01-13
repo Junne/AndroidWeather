@@ -20,6 +20,7 @@
 
         <ImageView
             android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:src="@mipmap/type_one_sunny"
             android:id="@+id/weather_icon"

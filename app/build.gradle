@@ -64,6 +64,10 @@ dependencies {
     compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
     compile 'com.trello.rxlifecycle2:rxlifecycle-navi:2.0.1'
     compile 'com.trello.rxlifecycle2:rxlifecycle-kotlin:2.0.1'
+    compile 'com.github.markzhai:blockcanary-android:1.4.0'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:25.0.1'
 }

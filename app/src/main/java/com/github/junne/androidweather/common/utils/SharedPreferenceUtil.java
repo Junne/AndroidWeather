@@ -39,7 +39,17 @@ public class SharedPreferenceUtil {
         return this;
     }
 
-    public String getString(String key, String defValue) { return  mPrefs.getString(key, defValue)};
+    public int getInt(String key, int defValue) {
+        return mPrefs.getInt(key, defValue);
+    }
+
+    public SharedPreferenceUtil putString(String key, String value) {
+        mPrefs.edit().putString(key, value).apply();
+        return this;
+    }
+
+    public String getString(String key, String defValue) {
+        return  mPrefs.getString(key, defValue); }
 
     public SharedPreferenceUtil putBoolean(String key, boolean value) {
         mPrefs.edit().putBoolean(key, value).apply();
