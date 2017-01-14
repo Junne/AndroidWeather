@@ -20,6 +20,8 @@ import com.github.junne.androidweather.component.AnimRecyclerViewAdapter;
 import com.github.junne.androidweather.component.ImageLoader;
 import com.github.junne.androidweather.modules.main.domain.Weather;
 
+import org.w3c.dom.Text;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -73,7 +75,11 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<RecyclerView.ViewHol
                 return new NowWeatherViewHolder(
                         LayoutInflater.from(mContext).inflate(R.layout.item_temperature, parent, false));
             case TYPE_TWO:
-                return
+                return new HoursWeatherViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_hour_info, parent, false));
+            case TYPE_THREE:
+                return new SuggestionViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_suggestion, parent, false));
+
+
 
         }
 
@@ -133,15 +139,118 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<RecyclerView.ViewHol
             itemHourInfoLinearlayout = (LinearLayout) itemView.findViewById(R.id.item_hour_info_linearlayout);
 
             for (int i = 0; i < mWeatherData.hourlyForecast.size(); i++) {
-                View view = View.inflate(mContext, R.layout.item_hour_info, null);
-                mClock[i] = (TextView) view.findViewById(R.id.)
+                View view = View.inflate(mContext, R.layout.item_hour_info_line, null);
+                mClock[i] = (TextView) view.findViewById(R.id.one_clock);
+                mTemp[i] = (TextView) view.findViewById(R.id.one_temp);
+                mHumidity[i] = (TextView) view.findViewById(R.id.one_humidity);
+                mWind[i] = (TextView) view.findViewById(R.id.one_wind);
+                itemHourInfoLinearlayout.addView(view);
             }
 
         }
 
+        void bind(Weather weather) {
+
+            try {
+                for (int i = 0; i < weather.hourlyForecast.size(); i++) {
+                    String mDate = weather.hourlyForecast.get(i).date;
+                    mClock[i].setText(mDate.substring(mDate.length() - 5, mDate.length()));
+                    mTemp[i].setText(String.format("%s℃", weather.hourlyForecast.get(i).tmp));
+                    mHumidity[i].setText(String.format("%s%%", weather.hourlyForecast.get(i).hum));
+                    mWind[i].setText(String.format("%Km/h", weather.hourlyForecast.get(i).wind));
+                }
+            } catch (Exception e) {
+                PLog.e(e.toString());
+            }
+        }
     }
 
 
+    class SuggestionViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.cloth_brief)
+        TextView clothBrief;
+        @BindView(R.id.cloth_txt)
+        TextView clothTxt;
+        @BindView(R.id.sport_brief)
+        TextView sportBrief;
+        @BindView(R.id.sport_txt)
+        TextView sportTxt;
+        @BindView(R.id.travel_brief)
+        TextView travelBrief;
+        @BindView(R.id.travel_txt)
+        TextView travelTxt;
+        @BindView(R.id.flu_brief)
+        TextView fluBrief;
+        @BindView(R.id.flu_txt)
+        TextView fluTxt;
+
+        SuggestionViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        void bind(Weather weather) {
+            try {
+                clothBrief.setText(String.format("穿衣指数---%s", weather.suggestion.drsg.brf));
+                clothTxt.setText(weather.suggestion.drsg.txt);
+
+                sportBrief.setText(String.format("运动指数---%s", weather.suggestion.sport.brf));
+                sportTxt.setText(weather.suggestion.sport.txt);
+
+                travelBrief.setText(String.format("旅游指数---%s", weather.suggestion.trav.brf));
+                travelTxt.setText(weather.suggestion.trav.txt);
+
+                fluBrief.setText(String.format("感冒指数---%s", weather.suggestion.flu.brf));
+                fluTxt.setText(weather.suggestion.flu.txt);
+
+            } catch (Exception e) {
+                PLog.e(e.toString());
+            }
+        }
+
+    }
+
+    class ForecastViewHolder extends RecyclerView.ViewHolder {
+        private LinearLayout forecastLinear;
+        private TextView[] forecastDate = new TextView[mWeatherData.dailyForecast.size()];
+        private TextView[] forecastTemp = new TextView[mWeatherData.dailyForecast.size()];
+        private TextView[] forecastTxt = new TextView[mWeatherData.dailyForecast.size()];
+        private ImageView[] forecastIcon = new ImageView[mWeatherData.dailyForecast.size()];
+
+        ForecastViewHolder(View itemView) {
+            super(itemView);
+            forecastLinear = (LinearLayout) itemView.findViewById(R.id.forecast_linear);
+            for (int i = 0; i < mWeatherData.dailyForecast.size(); i++) {
+                View view  = View.inflate(mContext, R.layout.item_forecast_line, null);
+                forecastDate[i] = (TextView) view.findViewById(R.id.forecast_date);
+                forecastTemp[i] = (TextView) view.findViewById(R.id.forecast_temp);
+                forecastTxt[i] = (TextView) view.findViewById(R.id.forecast_txt);
+                forecastIcon[i] = (ImageView) view.findViewById(R.id.forecast_icon);
+                forecastLinear.addView(view);
+            }
+        }
+
+        void bind(Weather weather) {
+            try {
+                forecastDate[0].setText("今日");
+                forecastDate[1].setText("明日");
+                for (int i = 0; i < weather.dailyForecast.size(); i ++) {
+                    if (i > 1) {
+                        try {
+                            forecastDate[i].setText(
+                                    Util.dayForWeek(weather.dailyForecast.get(i).date)
+                            );
+                        } catch (Exception e) {
+                            PLog.e(e.toString());
+                        }
+                    }
+                    ImageLoader.load(mContext, SharedPreferenceUtil.getInstance().getInt(weather.dailyForecast.get(i).cond.txtD, R.mipmap.none), forecastIcon[i]);
+                    
+                }
+            }
+        }
+
+    }
 
 
 
