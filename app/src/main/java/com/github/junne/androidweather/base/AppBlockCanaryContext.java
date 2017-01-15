@@ -9,16 +9,16 @@ import com.github.moduth.blockcanary.BlockCanaryContext;
 
 public class AppBlockCanaryContext extends BlockCanaryContext {
 
-    @Override
-    public int getConfigBlockThreshold() { return 500;}
-
-    @Override
-    public boolean isNeedDisplay() { return BuildConfig.DEBUG;}
-
-
-    @Override
-    public String getLogPath() {
-        return "/blockcanary/performance";
-    }
+//    @Override
+//    public int getConfigBlockThreshold() { return 500;}
+//
+//    @Override
+//    public boolean isNeedDisplay() { return BuildConfig.DEBUG;}
+//
+//
+//    @Override
+//    public String getLogPath() {
+//        return "/blockcanary/performance";
+//    }
 
 }

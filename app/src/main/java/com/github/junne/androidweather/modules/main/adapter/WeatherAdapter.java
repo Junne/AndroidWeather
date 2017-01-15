@@ -20,7 +20,6 @@ import com.github.junne.androidweather.component.AnimRecyclerViewAdapter;
 import com.github.junne.androidweather.component.ImageLoader;
 import com.github.junne.androidweather.modules.main.domain.Weather;
 
-import org.w3c.dom.Text;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,13 +77,37 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<RecyclerView.ViewHol
                 return new HoursWeatherViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_hour_info, parent, false));
             case TYPE_THREE:
                 return new SuggestionViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_suggestion, parent, false));
-
-
-
+            case TYPE_FOUR:
+                return new ForecastViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_forecast, parent, false));
         }
 
         return super.onCreateViewHolder(parent, viewType);
     }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        int itemType = getItemViewType(position);
+        switch (itemType) {
+            case TYPE_ONE:
+                ((NowWeatherViewHolder) holder).bind(mWeatherData);
+                break;
+            case TYPE_TWO:
+                ((HoursWeatherViewHolder) holder).bind(mWeatherData);
+                break;
+            case TYPE_THREE:
+                ((SuggestionViewHolder) holder).bind(mWeatherData);
+                break;
+            case TYPE_FOUR:
+                ((ForecastViewHolder) holder).bind(mWeatherData);
+                break;
+        }
+        if (SharedPreferenceUtil.getInstance().getMainAnim()) {
+            showItemAnim(holder.itemView, position);
+        }
+    }
+
+    @Override
+    public int getItemCount() { return mWeatherData.status != null ? 4: 0;}
 
     class NowWeatherViewHolder extends RecyclerView.ViewHolder {
 
@@ -245,15 +268,37 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<RecyclerView.ViewHol
                         }
                     }
                     ImageLoader.load(mContext, SharedPreferenceUtil.getInstance().getInt(weather.dailyForecast.get(i).cond.txtD, R.mipmap.none), forecastIcon[i]);
-                    
+                    forecastTemp[i].setText(
+                            String.format("%s℃ - %s℃",
+                                    weather.dailyForecast.get(i).tmp.min,
+                                    weather.dailyForecast.get(i).tmp.max)
+                    );
+
+                    forecastTxt[i].setText(
+                            String.format("%s。 %s %s %s km/h。 降水几率 %s%%。",
+                                    weather.dailyForecast.get(i).cond.txtD,
+                                    weather.dailyForecast.get(i).wind.sc,
+                                    weather.dailyForecast.get(i).wind.dir,
+                                    weather.dailyForecast.get(i).wind.spd,
+                                    weather.dailyForecast.get(i).pop)
+
+                    );
                 }
+            } catch (Exception e) {
+                PLog.e(e.toString());
             }
         }
 
     }
 
 
+    interface OnItemClickListener {
+        void onItemClick(Weather mWeather);
+    }
 
+    private OnItemClickListener listener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) { this.listener = listener; }
 
 
 }

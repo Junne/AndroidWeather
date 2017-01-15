@@ -44,7 +44,7 @@ public class Weather implements Serializable {
             @SerializedName("aqi") public String aqi;
             @SerializedName("co") public String co;
             @SerializedName("no2") public String no2;
-            @SerializedName("o3") public Stirng o3;
+            @SerializedName("o3") public String o3;
             @SerializedName("pm10") public String pm10;
             @SerializedName("pm25") public String pm25;
             @SerializedName("qlty") public String qlty;

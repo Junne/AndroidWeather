@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.github.junne.androidweather.R;
 import com.github.junne.androidweather.base.BaseActivity;
+import com.github.junne.androidweather.common.PLog;
 import com.github.junne.androidweather.modules.main.adapter.HomePagerAdapter;
 
 import butterknife.BindView;
@@ -42,6 +43,8 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        PLog.i("onCreate");
+        initView();
     }
 
     @Override
@@ -73,6 +76,8 @@ public class HomeActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
         HomePagerAdapter mHomePagerAdapter = new HomePagerAdapter(getSupportFragmentManager());
+        mHomePagerAdapter.addTab(new MainFragment(), "主页面");
+
 
 
 

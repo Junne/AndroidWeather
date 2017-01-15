@@ -35,7 +35,7 @@ public class AnimRecyclerViewAdapter<T extends RecyclerView.ViewHolder> extends 
     }
 
     public void showItemAnim(final View view, final int position) {
-        Context context = view.getContext();
+        final Context context = view.getContext();
         if (position > mLastPosition) {
             view.setAlpha(0);
             view.postDelayed(new Runnable() {
@@ -66,6 +66,8 @@ public class AnimRecyclerViewAdapter<T extends RecyclerView.ViewHolder> extends 
             mLastPosition = position;
         }
     }
+
+
 
 
 }
