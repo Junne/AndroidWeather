@@ -6,21 +6,18 @@ import com.github.junne.androidweather.common.PLog;
 import com.github.junne.androidweather.common.ToastUtil;
 import com.github.junne.androidweather.common.utils.Util;
 import com.github.junne.androidweather.modules.main.domain.CityORM;
-import com.github.junne.androidweather.modules.main.domain.Weather;
 import com.litesuits.orm.db.assit.WhereBuilder;
 
 import java.io.File;
-import java.util.Observable;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observer;
+import io.reactivex.Observable;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.internal.tls.OkHostnameVerifier;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -39,6 +36,8 @@ public class RetrofitSingleton {
 
     private void init() {
         initOkHttp();
+        initRetroift();
+        apiService = retrofit.create(ApiInterface.class);
     }
 
     private static void initOkHttp() {
@@ -69,7 +68,6 @@ public class RetrofitSingleton {
                         .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
                         .build();
             }
-            return response;
         };
         builder.cache(cache).addInterceptor(cacheInterceptor);
         builder.connectTimeout(15, TimeUnit.SECONDS);
@@ -102,6 +100,29 @@ public class RetrofitSingleton {
     }
 
     public ApiInterface getApiService() { return apiService;}
+
+//    public Observable<Weather> fetchWeather(final String city) {
+//
+//        return apiService.mWeatherAPI(city, C.KEY)
+//                .flatMap(weatherAPI -> {
+//                    String status = weatherAPI.mHeWeatherDataService30s.get(0).status;
+//
+//                    if ("no more requests".equals(status)) {
+//                        return Observable.error(new RuntimeException("API免费次数已经用完"));
+//                    } else if("unknown city".equals(status)) {
+//                        return Observable.error(new RuntimeException(String.format("API没有%s", city)));
+//                    }
+//                    return Observable.just(weatherAPI)
+//                })
+//                .map(weatherAPI -> weatherAPI.mHeWeatherDataService30s.get(0))
+//                .compose(RxUtils.rxSchedulerHelper());
+//    }
+
+//    public Observable<VersionAPI> fetchVersion() {
+//
+//    }
+
+
 
 
 
