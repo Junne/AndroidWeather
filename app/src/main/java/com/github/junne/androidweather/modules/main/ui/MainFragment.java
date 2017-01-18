@@ -19,6 +19,7 @@ import com.github.junne.androidweather.R;
 import com.github.junne.androidweather.base.BaseFragment;
 import com.github.junne.androidweather.common.PLog;
 import com.github.junne.androidweather.common.utils.SharedPreferenceUtil;
+import com.github.junne.androidweather.component.RetrofitSingleton;
 import com.github.junne.androidweather.modules.main.adapter.WeatherAdapter;
 import com.github.junne.androidweather.modules.main.domain.Weather;
 
@@ -95,7 +96,7 @@ public class MainFragment extends BaseFragment implements AMapLocationListener{
     private Observable<Weather> fetchDataByNetWork() {
 
         String cityName = SharedPreferenceUtil.getInstance().getCityName();
-        return
+
     }
 
     private void load() {

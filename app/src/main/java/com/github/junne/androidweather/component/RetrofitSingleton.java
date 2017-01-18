@@ -2,13 +2,17 @@ package com.github.junne.androidweather.component;
 
 import com.github.junne.androidweather.BuildConfig;
 import com.github.junne.androidweather.base.BaseApplication;
+import com.github.junne.androidweather.base.C;
 import com.github.junne.androidweather.common.PLog;
 import com.github.junne.androidweather.common.ToastUtil;
+import com.github.junne.androidweather.common.utils.RxUtils;
 import com.github.junne.androidweather.common.utils.Util;
 import com.github.junne.androidweather.modules.main.domain.CityORM;
+import com.github.junne.androidweather.modules.main.domain.Weather;
 import com.litesuits.orm.db.assit.WhereBuilder;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -40,6 +44,16 @@ public class RetrofitSingleton {
         apiService = retrofit.create(ApiInterface.class);
     }
 
+    private RetrofitSingleton() { init();}
+
+    public static RetrofitSingleton getInstance() {
+        return SingletonHolder.INSTANCE;
+    }
+
+    private static class SingletonHolder {
+        private static final RetrofitSingleton INSTANCE = new RetrofitSingleton();
+    }
+
     private static void initOkHttp() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
@@ -48,27 +62,34 @@ public class RetrofitSingleton {
             builder.addInterceptor(loggingInterceptor);
         }
         File cacheFile = new File(BaseApplication.cacheDir, "/NetCache");
+
         Cache cache = new Cache(cacheFile, 1024*1024*50);
-        Interceptor cacheInterceptor = chain -> {
-            Request request = chain.request();
-            if (!Util.isNetworkConnected(BaseApplication.getmAppContext())) {
-                request = request.newBuilder()
-                        .cacheControl(CacheControl.FORCE_CACHE)
-                        .build();
-            }
-            Response response = chain.proceed(request);
-            if (Util.isNetworkConnected(BaseApplication.getmAppContext())) {
-                int maxAge = 0;
-                response.newBuilder()
-                        .header("Cache-Control", "public, max-age=" + maxAge)
-                        .build();
-            } else {
-                int maxStale = 60 * 60 * 24 * 28;
-                response.newBuilder()
+
+        Interceptor cacheInterceptor = new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request request = chain.request();
+                if (!Util.isNetworkConnected(BaseApplication.getmAppContext())) {
+                    request = request.newBuilder()
+                            .cacheControl(CacheControl.FORCE_CACHE)
+                            .build();
+                }
+                Response response = chain.proceed(request);
+                if (Util.isNetworkConnected(BaseApplication.getmAppContext())) {
+                    int maxAge = 0;
+                    response.newBuilder()
+                            .header("Cache-Control", "public, max-age=" + maxAge)
+                            .build();
+                } else {
+                    int maxStale = 60 * 60 * 24 * 28;
+                    response.newBuilder()
                         .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
                         .build();
+                }
+                return response;
             }
         };
+
         builder.cache(cache).addInterceptor(cacheInterceptor);
         builder.connectTimeout(15, TimeUnit.SECONDS);
         builder.readTimeout(20, TimeUnit.SECONDS);
@@ -116,6 +137,7 @@ public class RetrofitSingleton {
 //                })
 //                .map(weatherAPI -> weatherAPI.mHeWeatherDataService30s.get(0))
 //                .compose(RxUtils.rxSchedulerHelper());
+//
 //    }
 
 //    public Observable<VersionAPI> fetchVersion() {
