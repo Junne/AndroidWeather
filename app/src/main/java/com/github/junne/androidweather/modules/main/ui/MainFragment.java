@@ -16,6 +16,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.github.junne.androidweather.R;
+import com.github.junne.androidweather.base.BaseApplication;
 import com.github.junne.androidweather.base.BaseFragment;
 import com.github.junne.androidweather.common.PLog;
 import com.github.junne.androidweather.common.utils.SharedPreferenceUtil;
@@ -28,6 +29,7 @@ import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import retrofit2.Retrofit;
+import rx.functions.Action1;
 
 /**
  * Created by Junne on 12/26/16.
@@ -100,6 +102,38 @@ public class MainFragment extends BaseFragment implements AMapLocationListener{
     }
 
     private void load() {
+//        fetchDataByNetWork()
+//                .doOnRequest(new Action1<Long>) {
+//
+//        }
+
+    }
+
+    /**
+     * 高德定位
+     */
+
+    private void location() {
+
+        mSwiprefresh.setRefreshing(true);
+        mLocationClient = new AMapLocationClient(BaseApplication.getmAppContext());
+        mLocationClient.setLocationListener(this);
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
+        mLocationOption.setNeedAddress(true);
+        mLocationOption.setOnceLocation(false);
+        mLocationOption.setWifiActiveScan(true);
+        mLocationOption.setMockEnable(false);
+
+        int tempTime = SharedPreferenceUtil.getInstance().getAutoUpdate();
+        if (tempTime == 0) {
+            tempTime = 100;
+        }
+
+        mLocationOption.setInterval(tempTime * SharedPreferenceUtil.ONE_HOUR);
+
+        mLocationClient.setLocationOption(mLocationOption);
+        mLocationClient.startLocation();
+
 
     }
 

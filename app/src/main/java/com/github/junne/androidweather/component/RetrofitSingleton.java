@@ -133,11 +133,10 @@ public class RetrofitSingleton {
 //                    } else if("unknown city".equals(status)) {
 //                        return Observable.error(new RuntimeException(String.format("API没有%s", city)));
 //                    }
-//                    return Observable.just(weatherAPI)
+//                    return Observable.just(weatherAPI);
 //                })
 //                .map(weatherAPI -> weatherAPI.mHeWeatherDataService30s.get(0))
 //                .compose(RxUtils.rxSchedulerHelper());
-//
 //    }
 
 //    public Observable<VersionAPI> fetchVersion() {
